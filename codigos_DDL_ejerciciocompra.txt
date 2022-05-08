@@ -1,0 +1,143 @@
+///CREAR TABLA PRODUCTO///
+
+create table producto(
+cod_producto text not null, nombre text not null, precio integer not null,
+constraint producto_pk primary key (cod_producto)
+);
+
+
+///CREAR TABLA METODO DE PAGO///
+
+create table metodo_pago(
+cod_metodo text not null, metodo text not null,
+constraint metodo_pago_pk primary key (cod_metodo)
+);
+
+
+///CREAR TABLA TIPO DE DOCUMENTO///
+
+create table tipo_doc(
+cod_tipo_doc text not null, tipo_doc text not null,
+constraint tipo_doc_pk primary key (cod_tipo_doc)
+);
+
+
+///CREAR TABLA TIPO DE PERSONA///
+
+create table tipo_persona(
+cod_tipo text not null, tipo_persona text not null,
+constraint tipo_persona_pk primary key (cod_tipo)
+);
+
+
+///CREAR TABLA PERSONA///
+
+create table persona(
+rut text not null, nombre1 text not null, nombre2 text not null, 
+apellido1 text not null, apellido2 text not null, 
+fecha_nac text not null, cod_tipo text not null,
+constraint persona_pk primary key (rut), 
+constraint fk_tipo_persona foreign key (cod_tipo)
+references tipo_persona (cod_tipo) match simple
+on update cascade
+on delete cascade
+);
+
+
+///CREAR TABLA BOLETA///
+
+create table boleta(
+id integer not null generated always as identity (increment 1 start 1 cache 1),
+fecha_bol text not null, rut_vendedor text not null, rut_cliente text not null, 
+cod_metodo text not null, cod_tipo_doc text not null, 
+constraint boleta_pk primary key (id), 
+constraint fk_boleta_vendedor foreign key (rut_vendedor)
+references persona (rut) match simple
+on update cascade
+on delete cascade,
+constraint fk_boleta_cliente foreign key (rut_cliente)
+references persona (rut) match simple
+on update cascade
+on delete cascade,
+constraint fk_boleta_metodo foreign key (cod_metodo)
+references metodo_pago (cod_metodo) match simple
+on update cascade
+on delete cascade,
+constraint fk_boleta_tipo foreign key (cod_tipo_doc)
+references tipo_doc (cod_tipo_doc) match simple
+on update cascade
+on delete cascade
+);
+
+
+
+///CREAR TABLA COMPRA///
+
+create table compra(
+id integer not null generated always as identity (increment 1 start 1 cache 1),
+cod_producto text not null, id_boleta integer not null, 
+constraint compra_pk primary key (id), 
+constraint fk_compra_producto foreign key (cod_producto)
+references producto (cod_producto) match simple
+on update cascade
+on delete cascade,
+constraint fk_compra_boleta foreign key (id_boleta)
+references boleta (id) match simple
+on update cascade
+on delete cascade
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+________
+
+
+///CREAR TABLA CORREO///
+
+create table correo(
+id integer not null generated always as identity (increment 1 start 1 cache 1),
+correo text not null, rut_persona text not null,
+constraint correo_pk primary key (id),
+constraint fk_correo_persona foreign key (rut_persona)
+references persona (rut) match simple
+on update cascade
+on delete cascade
+);
+
+
+///CREAR TABLA FONO///
+
+create table fono(
+id integer not null generated always as identity (increment 1 start 1 cache 1),
+fono text not null, rut_persona text not null,
+constraint fono_pk primary key (id),
+constraint fk_fono_persona foreign key (rut_persona)
+references persona (rut) match simple
+on update cascade
+on delete cascade
+);
+
+
+///CREAR TABLA FONO///
+
+create table fono(
+id integer not null generated always as identity (increment 1 start 1 cache 1),
+fono text not null, rut_persona text not null,
+constraint fono_pk primary key (id),
+constraint fk_fono_persona foreign key (rut_persona)
+references persona (rut) match simple
+on update cascade
+on delete cascade
+);
+
